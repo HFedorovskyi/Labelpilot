@@ -39,7 +39,6 @@ class Nomenclature(Base):
     portion_container_id = Column(Integer, ForeignKey('container.id'), nullable=True)
     box_container_id = Column(Integer, ForeignKey('container.id'), nullable=True)
     close_box_counter = Column(Integer, nullable=True)
-    close_pallet_counter = Column(Integer, nullable=True)
     portion_container = relationship("Container", foreign_keys=[portion_container_id])
     box_container = relationship("Container", foreign_keys=[box_container_id])
     pack = relationship("Pack", back_populates="nomenclature")
@@ -66,8 +65,11 @@ class Pallet(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     number = Column(String, nullable=False, unique=True)
     created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, nullable=True)
+    status = Column(String, nullable=False, default='Open')
+    weight = Column(Float, nullable=True)
+
     boxes = relationship("Boxes", back_populates="pallet")
-    is_open = Column(Boolean, nullable=False)
 
 
 class Boxes(Base):
@@ -77,7 +79,8 @@ class Boxes(Base):
     pallete_id = Column(Integer, ForeignKey('pallet.id'), nullable=False)
     number = Column(String, nullable=False, unique=True)
     created_at = Column(DateTime, default=datetime.now)
-    is_open = Column(Boolean, nullable=False)
+    updated_at = Column(DateTime, default=None)
+    status = Column(String, nullable=False, default='Open')
 
     pallet = relationship("Pallet", back_populates="boxes")
     pack = relationship("Pack", back_populates="boxes")

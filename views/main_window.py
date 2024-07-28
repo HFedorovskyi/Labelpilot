@@ -4,7 +4,7 @@ from scales_connections.ethernet_controller import EthernetController
 from ui.ui_mainwindow import Ui_MainWindow
 from scales_connections.serial_communications_controller import SerialController
 from setting.settings_controller import SettingsController
-from datebase.datebase_controller import LabelCustomDbController
+from datebase.LabelCustom_datebase_controller import LabelCustomDbController
 from views.numpad import NumPadController
 
 
@@ -31,13 +31,14 @@ class MainWindow(QMainWindow):
             0)  # Устнавливаем первый открывающийся виджет (На данный момент маркирвка без задания)
         self.settings_controller = SettingsController(self.ui, self)
         self.settings_controller.load_settings()
+        self.datebase_controller = LabelCustomDbController(self.ui)
         self.change_controller()
 
         self.controller.setup_connector()
         self.controller.start()
         self.controller.set_weight_stable_timer()
 
-        self.datebase_controller = LabelCustomDbController(self.ui)
+
         # Подключаем кнопки к методам
         self.ui.settingButn.clicked.connect(self.open_settings_menu)
         self.ui.settingButn_2.clicked.connect(self.open_settings_menu)

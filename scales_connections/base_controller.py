@@ -3,7 +3,7 @@ from print_label.print_label_controller import PrintLabelController
 from collections import deque
 import abc
 from abc import ABCMeta
-from datebase.datebase_controller import FillTreeWidgetDbController
+from datebase.LabelCustom_datebase_controller import FillTreeWidgetDbController
 
 
 class QObjectMeta(ABCMeta, type(QObject)):

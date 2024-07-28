@@ -1,0 +1,13 @@
+{
+    "title": "Product Label",
+    "page_size": [283.46, 283.46],
+    "fields": {
+        "product_name": "Product: {product_name}",
+        "weight": "Weight: {weight} kg"
+    },
+    "layout": {
+        "title": {"x": 56.69, "y": 198.42},
+        "product_name": {"x": 56.69, "y": 141.73},
+        "weight": {"x": 56.69, "y": 56.69}
+    }
+}

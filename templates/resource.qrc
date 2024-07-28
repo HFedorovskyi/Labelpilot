@@ -1,0 +1,83 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/full_stop_v4ffc9ig8gwq.svg</file>
+    <file>icons/scroll_xvxgg02peqg9.svg</file>
+    <file>icons/eraser_5nnagxfcdcfj.svg</file>
+    <file>icons/backspace_v3vwpuxe0l1p.svg</file>
+    <file>icons/eight_5jccwzxkz51e.svg</file>
+    <file>icons/five_8nnp83iqbocz.svg</file>
+    <file>icons/four_dgxmxtcaq35f.svg</file>
+    <file>icons/nine_zf80z87ecqgh.svg</file>
+    <file>icons/one_a18tke2tpv4f.svg</file>
+    <file>icons/seven_9ra81mznhqjm.svg</file>
+    <file>icons/six_n92whau1qipf.svg</file>
+    <file>icons/three_oxvkmq1dh2la.svg</file>
+    <file>icons/two_ngxkfdbz0xe7.svg</file>
+    <file>icons/zero_ciyyihflmmyq.svg</file>
+    <file>icons/down_arrow_gmceuz4sicdl.svg</file>
+    <file>icons/down_arrow_vb63mabrf9bn (1).svg</file>
+    <file>icons/down_arrow_vb63mabrf9bn.svg</file>
+    <file>icons/arrow_down_u6ij08np9c6e.svg</file>
+    <file>icons/arrow_down_zkwj1hjeona2.svg</file>
+    <file>icons/down_arrow_zjh8d4uotvly.svg</file>
+    <file>icons/kitchen_scale_up0btwy0qbyh.svg</file>
+    <file>icons/usb_trmvzo2325cj.svg</file>
+    <file>icons/menu_2d9l8s604nq4.svg</file>
+    <file>icons/menu_m6wgkgcfi4ud.svg</file>
+    <file>icons/menu_4daqxfk4iy5v.svg</file>
+    <file>icons/check_du9eye0oswbt.svg</file>
+    <file>icons/ok_27fxurg6jmw4.svg</file>
+    <file>icons/cancel_nnivzmi7quma.svg</file>
+    <file>icons/scale_mjyoc8pn5u8b.svg</file>
+    <file>icons/kitchen_scale_9dw7ue8d6n4b.svg</file>
+    <file>icons/kitchen_scale_9dw7ue8d6n4b.svg</file>
+    <file>icons/ip_address_m6qvx2qa4gd0 (1).svg</file>
+    <file>icons/connector_i86sbig2dy95.svg</file>
+    <file>icons/podklyuchenie_9s5179g2iegk_32.png</file>
+    <file>icons/connect_9s5179g2iegk.svg</file>
+    <file>icons/ip-adres_m6qvx2qa4gd0_32.png</file>
+    <file>icons/razjem_i86sbig2dy95_32.png</file>
+    <file>icons/survey_nsuh0eeoyu2z.svg</file>
+    <file>icons/repeat_qlrg067k4jxk.svg</file>
+    <file>icons/cancel_o8dj9cqxmwbl.svg</file>
+    <file>icons/label_62lcqagmtpj0.svg</file>
+    <file>icons/stock_4kvw2mm2kfh3.svg</file>
+    <file>icons/package_pd6ye9e22xyc.svg</file>
+    <file>icons/package_c8sgme51rih8.svg</file>
+    <file>icons/label_v49ny6wge6al.svg</file>
+    <file>icons/open_box_2qidrxnyisj5.svg</file>
+    <file>icons/delivery_box_lska54b3s929.svg</file>
+    <file>icons/print_wvixxsmr4w3n.svg</file>
+    <file>icons/printer_ztal8w3rcad8.svg</file>
+    <file>icons/menu_p9kjtvdai8s0.svg</file>
+    <file>icons/printer_ztal8w3rcad8_64.png</file>
+    <file>icons/printer_ztal8w3rcad8_512.png</file>
+    <file>icons/printer_ztal8w3rcad8.svg</file>
+    <file>icons/printer_6fkbai05pwhj.svg</file>
+    <file>icons/emergency_exit_nop0pice1req.svg</file>
+    <file>icons/info_8eyvq4xyzfds.svg</file>
+    <file>icons/user_rx4lk96w730g.svg</file>
+    <file>icons/settings_cjy7y94ude82.svg</file>
+    <file>icons/report_0ok1e3gxilw0.svg</file>
+    <file>icons/list_pxqdz7ye1u4x.svg</file>
+    <file>icons/price_1yqd9vgrxrbf.svg</file>
+    <file>icons/homework_xxbtdusz7gez.svg</file>
+    <file>icons/task_calh4jr6r1ds.svg</file>
+    <file>icons/homework_xevg8z08o9a9 (1).svg</file>
+    <file>logo-Photoroom.png</file>
+    <file>logo.png</file>
+    <file>icons/account_circle_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/info_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/library_books_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/logout_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/loyalty_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/menu_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/monitoring_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/settings_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/task_24dp_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>icons/text_select_move_down_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg</file>
+  </qresource>
+  <qresource prefix="background">
+    <file>background.png</file>
+  </qresource>
+</RCC>

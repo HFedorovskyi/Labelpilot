@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledCoFgAB.ui'
+## Form generated from reading UI file 'untitledtnIxrw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -640,7 +640,7 @@ class Ui_MainWindow(object):
         self.widget_5.setStyleSheet(u"QWidget {\n"
 "    border-radius: 10px; /* \u0417\u0430\u043a\u0440\u0443\u0433\u043b\u0435\u043d\u043d\u044b\u0435 \u0443\u0433\u043b\u044b */\n"
 "    padding: 8px; /* \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0435 \u043e\u0442\u0441\u0442\u0443\u043f\u044b */\n"
-"    background-color: rgb(255, 255, 255); /* \u0426\u0432\u0435\u0442 \u0444\u043e\u043d\u0430 */\n"
+"background-color: #f0f0f0;\n"
 "    color: #333333; /* \u0426\u0432\u0435\u0442 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
 "    font: 14pt \"Segoe UI\"; /* \u0428\u0440\u0438\u0444\u0442 \u0438 \u0440\u0430\u0437\u043c\u0435\u0440 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
 "}")
@@ -762,7 +762,13 @@ class Ui_MainWindow(object):
 "    color: #333333; /* \u0426\u0432\u0435\u0442 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
 "    font: 12pt \"Segoe UI\"; /* \u0428\u0440\u0438\u0444\u0442 \u0438 \u0440\u0430\u0437\u043c\u0435\u0440 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
 "}\n"
-"")
+"QHeaderView::section {\n"
+"    background-color: #f0f0f0;\n"
+"    padding: 1px;\n"
+"    border: 1px solid #d9d9d9;\n"
+"    font-size: 10pt;\n"
+"    border-radius: 10px;  /* \u0417\u0430\u043a\u0440\u0443\u0433\u043b\u0435\u043d\u043d\u044b\u0435 \u0443\u0433\u043b\u044b */\n"
+"}")
         self.ContainerstreeWidget.setAlternatingRowColors(True)
         self.ContainerstreeWidget.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.ContainerstreeWidget.setUniformRowHeights(False)
@@ -988,7 +994,7 @@ class Ui_MainWindow(object):
 "")
         self.widget_6 = QWidget(self.tab_3)
         self.widget_6.setObjectName(u"widget_6")
-        self.widget_6.setGeometry(QRect(10, 100, 1543, 111))
+        self.widget_6.setGeometry(QRect(10, 100, 1543, 71))
         self.widget_6.setStyleSheet(u"QWidget {\n"
 "    border-radius: 10px; /* \u0417\u0430\u043a\u0440\u0443\u0433\u043b\u0435\u043d\u043d\u044b\u0435 \u0443\u0433\u043b\u044b */\n"
 "    padding: 8px; /* \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0435 \u043e\u0442\u0441\u0442\u0443\u043f\u044b */\n"
@@ -2023,7 +2029,7 @@ class Ui_MainWindow(object):
         self.statisticsbtn.toggled.connect(self.statisticsBtn_2.setChecked)
 
         self.stackedWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

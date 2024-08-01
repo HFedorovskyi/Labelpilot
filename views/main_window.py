@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import Slot, QDate, QThread, Signal, QEvent
+from PySide6.QtCore import Slot, QDate, QThread, Signal, QEvent, Qt
 from scales_connections.ethernet_controller import EthernetController
 from ui.ui_mainwindow import Ui_MainWindow
-from scales_connections.serial_communications_controller import SerialController
+from scales_connections.serial_controller import SerialController
 from setting.settings_controller import SettingsController
 from datebase.LabelCustom_datebase_controller import LabelCustomDbController
 from views.numpad import NumPadController
@@ -24,6 +24,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()  #Создаём экземпляп класса MainWindows(), главное окно
+        #self.showFullScreen()
+        #self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.ui.setupUi(self)  # передаём экземплляр в setupUI
         self.ui.menuBtn.click()
         self.ui.dateEdit.setDate(QDate.currentDate())
@@ -37,6 +39,7 @@ class MainWindow(QMainWindow):
         self.controller.setup_connector()
         self.controller.start()
         self.controller.set_weight_stable_timer()
+
 
 
         # Подключаем кнопки к методам

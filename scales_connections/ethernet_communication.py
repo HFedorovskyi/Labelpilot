@@ -1,7 +1,7 @@
 import socket
 import threading
 from concurrent.futures import ThreadPoolExecutor
-
+from app_logging.logging_config import logger
 from PySide6.QtCore import QObject, Signal
 
 
@@ -35,7 +35,6 @@ class EthernetWorker(QObject):
             while not self._stop_event.is_set():
                 with self._lock:
                     command = self.protocol.create_command()
-                    print(command)
                     self.sock.send(command)
                     response = self.sock.recv(1024)
                     if response:

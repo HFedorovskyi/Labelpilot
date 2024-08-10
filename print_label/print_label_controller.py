@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Slot
-import threading
 from print_label.print_label_func import PrintWorker
+import threading
 
 
 class PrintLabelController(QObject):

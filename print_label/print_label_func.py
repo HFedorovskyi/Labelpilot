@@ -1,9 +1,10 @@
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Signal
 from print_label.label_gen import LabelGenerator
 import win32print
 
 
 class PrintWorker(QObject):
+    finished = Signal()
 
     def __init__(self, weight, current_nomenclature, ui):
         super().__init__()
@@ -14,6 +15,7 @@ class PrintWorker(QObject):
 
     def run(self):
         self.send_to_printer(self.weight, self.current_nomenclature)
+        self.finished.emit()
 
     def send_to_printer(self, weight, current_nomenclature):
         self.label_gen.create_label(current_nomenclature, weight)

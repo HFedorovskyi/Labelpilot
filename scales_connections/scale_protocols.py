@@ -74,11 +74,36 @@ class MassaKProtocol2(ScaleProtocol):
         return weight_kilograms
 
 
+class MassaKProtocolR(ScaleProtocol):
+    '''Протокол для обмена с весами МАССА-К серии R(ТЕРМИНАЛЫ)'''
+    HEADER = b'\xF8\x55\xCE'
+    CMD_GET_MASSA = b'\xA0'
+    BRAUDRATE = 19200
+    STOP = 1
+    PARITY = 'N'
+    STOPBITS = 1  # Четность
+
+    def create_command(self):
+        length = struct.pack('<H', 1)  # длина тела сообщения
+        command = self.CMD_GET_MASSA
+        body = length + command
+        crc = self.calculate_crc(body)
+        crc_bytes = struct.pack('<H', crc)
+        return self.HEADER + body + crc_bytes
+
+    def parce_response(self, response):
+        weight, division, stable = struct.unpack('<iBB', response[6:12])
+        weight_kg = weight / 1000.0
+        return weight_kg
+
+
 PROTOCOLS_SERIAL = {
     'Масса-К : Протокол 100': MassaKProtocol100,
     'Масса-К: Протокол 2': MassaKProtocol2,
+    'Масса-К: Протокол R': MassaKProtocolR,
 }
 
 PROTOCOLS_ETHERNET = {
     'Масса-К : Протокол 100': MassaKProtocol100,
+    'Масса-К: Протокол R': MassaKProtocolR,
 }

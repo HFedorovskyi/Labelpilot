@@ -34,15 +34,12 @@ class ScaleEmulator:
         return crc & 0xFFFF
 
     def create_response(self):
-        body = b'\xF8\x55\xCE' + struct.pack('!H', 9) + b'\x24'
-        body += struct.pack('!i', self.current_weight)
-        body += struct.pack('!B', self.division)
-        body += struct.pack('!B', self.stable)
-        body += struct.pack('!B', self.net)
-        body += struct.pack('!B', self.zero)
-        body += struct.pack('!i', self.tare)
+        body = b'\xF8\x55\xCE' + struct.pack('<H', 7) + b'\x10'
+        body += struct.pack('<i', self.current_weight)
+        body += struct.pack('B', self.division)
+        body += struct.pack('B', self.stable)
         crc = self.calculate_crc(body)
-        response = body + struct.pack('!H', crc)
+        response = body + struct.pack('<H', crc)
         return response
 
     def generate_weight(self):
@@ -64,7 +61,7 @@ class ScaleEmulator:
         while self.running:
             request = conn.recv(8)
             print(request)
-            if request[:3] == b'\xF8\x55\xCE' and request[5] == 0x23:
+            if request[:3] == b'\xF8\x55\xCE' and request[5] == 0xA0:
                 self.generate_weight()
                 response = self.create_response()
                 conn.sendall(response)

@@ -49,7 +49,7 @@ class EthernetController(BaseScaleController):
 
     def __init__(self, ui):
         super().__init__(ui)
-        self.protocol = protocols.PROTOCOLS_ETHERNET.get(self.ui.ListScalecomboBox.currentText())
+        self.protocol = None
         self.sock = None
         self.ip_adress = None
         self.port = None
@@ -58,6 +58,7 @@ class EthernetController(BaseScaleController):
         self.progress_updated.connect(self.update_progress_bar)
 
     def setup_connector(self):
+        self.protocol = protocols.PROTOCOLS_ETHERNET.get(self.ui.ListScalecomboBox.currentText())
         self.ip_adress = self.ui.setIPlineEdit.text()
         self.port = int(self.ui.setNetworkPortlineEdit.text())   #### Перевожу в int для Nuitka
         self.connector = EthernetWorker(self.ip_adress, self.port, self.protocol)

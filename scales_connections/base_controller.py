@@ -3,7 +3,7 @@ from print_label.print_label_controller import PrintLabelController
 from collections import deque
 import abc
 from abc import ABCMeta
-from datebase.LabelCustom_datebase_controller import FillTreeWidgetDbController
+from app_logging.logging_config import logger
 
 
 class QObjectMeta(ABCMeta, type(QObject)):
@@ -14,13 +14,14 @@ class BaseScaleController(QObject, abc.ABC, metaclass=QObjectMeta):
     '''Родительский класс для получения данных с весово и отображения в интерфейсе.
     Так же здесб прописана логика печати по стабилизации веса'''
     data_received = Signal(float)
+    finish_weight_stability = Signal()
 
     def __init__(self, ui):
         super().__init__()
         self.ui = ui
         self.connector = None
-        self.fillTreeWidget = FillTreeWidgetDbController(self.ui)
-        self.fillTreeWidget.fill_ContainerstreeWidget()
+        #self.working_pack_controller = WorkingWithPacksController(self.ui)
+        #self.working_pack_controller.fill_ContainerstreeWidget()
         self.current_weight = 0
         self.previous_weights = deque(maxlen=3)  # Хранение последних 3 значений веса
         self.stability_threshold = 3  #Определение стабильности - 3 раза подряд сигнал с одинаковым весом - вес стабилен# устанавливем протокол для выбраных весов в настройках
@@ -29,6 +30,9 @@ class BaseScaleController(QObject, abc.ABC, metaclass=QObjectMeta):
         self.weight_stable_timer = QTimer()
         self.print_controller = PrintLabelController(ui)
         self.ui.printPortionBtn.clicked.connect(self.print_label_without_stability)
+
+
+
 
     @abc.abstractmethod
     def setup_connector(self):
@@ -48,29 +52,29 @@ class BaseScaleController(QObject, abc.ABC, metaclass=QObjectMeta):
 
     @Slot(str)
     def on_data_received(self, data):  #Слот для вывода данных с коннектора
-
-        self.previous_weights.append(self.current_weight)
+        logger.debug(f'Current weight: {self.current_weight}')
+        if self.current_weight > 0:
+            self.previous_weights.append(self.current_weight)
         self.current_weight = data
-        if self.current_weight == 0:
-            self.ui.widget_5.setStyleSheet(' border-radius: 10px;border: 1px solid gray;')
         self.ui.indicationWeightBruttoBrowser.setText(f'{data}')
         self.ui.indicationWeightNettotextBrowser.setText(
-            f'{round(data - float(self.ui.conteinerWeightTextBrowser.toPlainText()), 3)}')
+            f'{round(data - float(self.ui.containerWeightLabel.text()), 3)}')
 
     def check_weight_stability(self):  #Проверка стабильности веса и печать по стабилизации
+        logger.debug('start check_weight_stability')
         if len(self.previous_weights) == self.stability_threshold and all(
                 w == self.current_weight for w in self.previous_weights):
+            logger.debug(f'previous weights {self.previous_weights}, current weight: {self.current_weight}')
             if not self.print_controller.is_printed:
                 self.ui.widget_5.setStyleSheet(
                     'border-radius: 10px;border: 1px solid gray;background-color: rgb(167, 255, 157)')
                 self.print_controller.print_label(self.current_weight)
-                self.fillTreeWidget.write_to_ContainerstreeWidget(
-                    self.ui.indicationWeightNettotextBrowser.toPlainText(),
-                    self.ui.indicationWeightBruttoBrowser.toPlainText())
+                self.finish_weight_stability.emit()
+
         else:
             if self.current_weight == 0:
                 self.ui.widget_5.setStyleSheet(
-                    'border-radius: 10px; border: 1px solid #d9d9d9; background-color: #f0f0f0;')
+                    'border-radius: 10px; border: 1px solid #d9d9d9; background-color: rgb(255, 255, 255);')
             else:
                 self.ui.widget_5.setStyleSheet(
                     'border-radius: 10px;border: 1px solid gray;background-color: rgb(255, 88, 66)')
@@ -78,9 +82,11 @@ class BaseScaleController(QObject, abc.ABC, metaclass=QObjectMeta):
 
     def set_weight_stable_timer(self):
         if self.ui.checkBoxWeightStablity.isChecked():
+            logger.debug('start set_weight_stable_timer with flag TRUE')
             self.weight_stable_timer.timeout.connect(self.check_weight_stability)
             self.weight_stable_timer.start(50)
         else:
+            logger.debug('start set_weight_stable_timer with flag FALSE')
             self.weight_stable_timer.stop()
 
     def print_label_without_stability(self):

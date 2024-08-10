@@ -14,13 +14,11 @@ if getattr(sys, 'frozen', False):
 else:
     # Если приложение запущено в режиме разработки
     application_path = os.path.dirname(__file__)
-print("Application path:", application_path)
+
 
 database_path = os.path.join(application_path, 'client_data.db')
 DATABASE_URL = f"sqlite:///{database_path}"
 
-print("Database path:", database_path)
-print("Database URL:", DATABASE_URL)
 
 # Создаем путь к базе данных в папке 'database'
 

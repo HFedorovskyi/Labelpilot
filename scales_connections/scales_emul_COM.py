@@ -8,7 +8,7 @@ import threading
 class ScaleEmulator:
     print(serial.__file__)
 
-    def __init__(self, port='COM1', baudrate=19200):
+    def __init__(self, port='COM3', baudrate=19200):
         self.port = port
         self.baudrate = baudrate
         self.ser = None
@@ -36,15 +36,12 @@ class ScaleEmulator:
         return crc & 0xFFFF
 
     def create_response(self):
-        body = b'\xF8\x55\xCE' + struct.pack('!H', 9) + b'\x24'
-        body += struct.pack('!i', self.current_weight)
-        body += struct.pack('!B', self.division)
-        body += struct.pack('!B', self.stable)
-        body += struct.pack('!B', self.net)
-        body += struct.pack('!B', self.zero)
-        body += struct.pack('!i', self.tare)
+        body = b'\xF8\x55\xCE' + struct.pack('<H', 7) + b'\x10'
+        body += struct.pack('<i', self.current_weight)
+        body += struct.pack('B', self.division)
+        body += struct.pack('B', self.stable)
         crc = self.calculate_crc(body)
-        response = body + struct.pack('!H', crc)
+        response = body + struct.pack('<H', crc)
         return response
 
     def generate_weight(self):
@@ -67,7 +64,7 @@ class ScaleEmulator:
             if self.ser.in_waiting > 0:
                 request = self.ser.read(8)
                 print(request)
-                if request[:3] == b'\xF8\x55\xCE' and request[5] == 0x23:
+                if request[:3] == b'\xF8\x55\xCE' and request[5] == 0xA0:
                     self.generate_weight()
                     response = self.create_response()
                     self.ser.write(response)
@@ -99,7 +96,7 @@ class ScaleEmulator:
 
 
 if __name__ == "__main__":
-    emulator = ScaleEmulator(port='COM1')
+    emulator = ScaleEmulator(port='COM3')
     try:
         emulator.start()
         while True:

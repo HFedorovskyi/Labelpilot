@@ -42,14 +42,13 @@ class SettingsController(QObject):
         self.ui.ListScalecomboBox.addItems(PROTOCOLS_ETHERNET.keys())
         self.ui.saveSetting.clicked.connect(self.save_settings)
         self.ui.saveSetting_2.clicked.connect(self.save_settings)
-        self.ui.buttonGroup_2.idToggled.connect(self.change_choseConnectioncomboBox)
+        self.ui.choseScaleConnectButtnGroup.idToggled.connect(self.change_choseConnectioncomboBox)
         self.ui.progressBar.setVisible(False)
 
 
     def save_settings(self):  # Сохранения настроек
         settings = {
-            #'connection_type': self.ui.choseConnectioncomboBox.currentIndex(),
-            'connection_type': self.ui.buttonGroup_2.checkedId(),
+            'connection_type': self.ui.choseScaleConnectButtnGroup.checkedId(),
             'selected_port': self.ui.ChoseComPortcomboBox.currentText(),
             'print_if_weight_stable': self.ui.checkBoxWeightStablity.isChecked(),
             'portions_printer': self.ui.chosePrinterPortionLabelComboBox.currentText(),
@@ -59,6 +58,10 @@ class SettingsController(QObject):
             'ip': self.ui.setIPlineEdit.text(),
             'port': self.ui.setNetworkPortlineEdit.text(),
             'show_batch': self.ui.checkBoxBatchUse.isChecked(),
+            'protocol_ethernet': self.ui.ListScalecomboBox.currentIndex(),
+            'protocol_com': self.ui.ListScalecomboBox_2.currentIndex(),
+
+            'max_box_on_pallet': self.ui.MaxBoxOnPalletLineEdit.text(),
 
         }
         self.settings_manager.save_settings(settings)
@@ -76,15 +79,21 @@ class SettingsController(QObject):
         network_port = settings.get('port', '12345')
         connection_type = settings.get('connection_type', -4)
         show_batch = settings.get('show_batch', False)
+        protocol_ethernet = settings.get('protocol_ethernet', 0)
+        protocol_com = settings.get('protocol_com', 0)
+        max_box_on_pallet = settings.get('max_box_on_pallet', 0)
 
 
         self.ui.ListScalecomboBox_2.setCurrentIndex(int(scale))
-        self.ui.buttonGroup_2.button(connection_type).setChecked(True)
+        self.ui.choseScaleConnectButtnGroup.button(connection_type).setChecked(True)
         self.ui.checkBoxWeightStablity.setChecked(settings.get('print_if_weight_stable', False))
         self.ui.setIPlineEdit.setText(ip)
         self.ui.setNetworkPortlineEdit.setText(network_port)
         self.change_choseConnectioncomboBox(connection_type)
         self.ui.checkBoxBatchUse.setChecked(show_batch)
+        self.ui.ListScalecomboBox.setCurrentIndex(protocol_ethernet)
+        self.ui.ListScalecomboBox_2.setCurrentIndex(protocol_com)
+        self.ui.MaxBoxOnPalletLineEdit.setText(str(max_box_on_pallet))
         self.show_batch()
 
 
@@ -120,7 +129,6 @@ class SettingsController(QObject):
 
     @Slot(int)
     def change_choseConnectioncomboBox(self, index):
-        print(index)
         if index == -4:
             self.ui.stackedWidget_2.setCurrentIndex(0)
         elif index == -3:

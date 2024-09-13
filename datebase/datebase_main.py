@@ -1,7 +1,7 @@
 import os
 import sys
 from contextlib import contextmanager
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, DateTime, Boolean
+from sqlalchemy import create_engine, Column, Integer, JSON, String, Float, ForeignKey, DateTime, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
@@ -15,10 +15,8 @@ else:
     # Если приложение запущено в режиме разработки
     application_path = os.path.dirname(__file__)
 
-
 database_path = os.path.join(application_path, 'client_data.db')
 DATABASE_URL = f"sqlite:///{database_path}"
-
 
 # Создаем путь к базе данных в папке 'database'
 
@@ -36,11 +34,12 @@ class Nomenclature(Base):
     exp_date = Column(Integer, nullable=False)
     portion_container_id = Column(Integer, ForeignKey('container.id'), nullable=True)
     box_container_id = Column(Integer, ForeignKey('container.id'), nullable=True)
+    labels_id = Column(Integer, ForeignKey('labels.id'), nullable=True)
     close_box_counter = Column(Integer, nullable=True)
     portion_container = relationship("Container", foreign_keys=[portion_container_id])
     box_container = relationship("Container", foreign_keys=[box_container_id])
-    pack = relationship("Pack", back_populates="nomenclature")
-
+    pack = relationship("Pack", back_populates="nomenclature", cascade='all, delete-orphan')
+    labels = relationship("Labels", backref="nomenclatures")
 
 class Container(Base):
     __tablename__ = 'container'
@@ -67,7 +66,7 @@ class Pallet(Base):
     status = Column(String, nullable=False, default='Open')
     weight = Column(Float, nullable=True)
 
-    boxes = relationship("Boxes", back_populates="pallet")
+    boxes = relationship("Boxes", back_populates="pallet", cascade='all, delete-orphan')
 
 
 class Boxes(Base):
@@ -81,14 +80,14 @@ class Boxes(Base):
     status = Column(String, nullable=False, default='Open')
 
     pallet = relationship("Pallet", back_populates="boxes")
-    pack = relationship("Pack", back_populates="boxes")
+    pack = relationship("Pack", back_populates="boxes", cascade='all, delete-orphan')
 
 
 class Pack(Base):
     __tablename__ = 'pack'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    number = Column(String, nullable=False, unique=True)
+    number = Column(String, nullable=False, unique=False)
     created_at = Column(DateTime, default=datetime.now)
     box_id = Column(Integer, ForeignKey('boxes.id'), nullable=False)
     nomenclature_id = Column(Integer, ForeignKey('nomenclature.id'), nullable=False)
@@ -99,7 +98,57 @@ class Pack(Base):
     nomenclature = relationship("Nomenclature", back_populates="pack")
 
 
+
+class UUID(Base):
+    __tablename__ = 'uuid'
+
+    uuid_client = Column(String, nullable=False, primary_key=True)
+
+
+class Barcodes(Base):
+    __tablename__ = 'barcodes'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    type_barcodes = Column(String, nullable=False, unique=True)
+    structure = Column(JSON, nullable=False, unique=True)
+    additional_info = Column(JSON, nullable=False, unique=True)
+
+
+class Labels(Base):
+    __tablename__ = 'labels'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    structure = Column(JSON, nullable=False, unique=True)
+
+
+
+def update_model_from_table(engine, table_name, model_class):
+    """
+    Обновляет модель SQLAlchemy на основе колонок в таблице базы данных.
+    """
+    # Получаем инспектор
+    inspector = inspect(engine)
+
+    # Получаем текущие колонки таблицы
+    columns_in_db = inspector.get_columns(table_name)
+    existing_columns = {column.name for column in model_class.__table__.columns}
+
+    # Добавляем отсутствующие колонки в класс модели
+    for column_info in columns_in_db:
+        col_name = column_info['name']
+        if col_name not in existing_columns:
+            # Добавляем новый атрибут-колонку в класс модели
+            setattr(model_class, col_name, Column(col_name, String))
+            print(f"Добавлена колонка '{col_name}' в класс {model_class.__name__}.")
+
+
+
 Base.metadata.create_all(engine)
+
+
+update_model_from_table(engine, 'nomenclature', Nomenclature)
+
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

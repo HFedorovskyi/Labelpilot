@@ -1,6 +1,6 @@
 {
     "connection_type": -3,
-    "selected_port": "COM4",
+    "selected_port": "",
     "print_if_weight_stable": true,
     "portions_printer": "Microsoft Print to PDF",
     "sum_printer": "Microsoft Print to PDF",
@@ -8,8 +8,8 @@
     "scale": 2,
     "ip": "127.0.0.1",
     "port": "12345",
-    "show_batch": true,
-    "protocol_ethernet": 0,
+    "show_batch": false,
+    "protocol_ethernet": 1,
     "protocol_com": 2,
-    "max_box_on_pallet": "28"
+    "max_box_on_pallet": "35"
 }

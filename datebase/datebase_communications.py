@@ -79,8 +79,8 @@ class WorkWithBoxes(QObject):
         return self.pack_in_box
 
     def close_pallet(self):
-
-        if self.box_status == 'Closed' and self.box_counter > 0:
+        print(self.box_counter)
+        if self.box_status != 'Open' and self.box_counter > 0:
             self.ui.stackedWidget_4.setCurrentIndex(1)
             logger.debug(f"Close pallet beggining")
             with get_db_session() as db:
@@ -147,6 +147,7 @@ class WorkWithBoxes(QObject):
 class WorkWithPack(QObject):
     closer_box = Signal(str)
     complete_adding_pack = Signal()
+    cancel_pack_signal = Signal()
 
     def __init__(self, ui, boxes_worker):
         super().__init__()
@@ -158,9 +159,11 @@ class WorkWithPack(QObject):
         self.error_window = CloseBoxError()
         self.complete_adding_pack.connect(self.complete_add_pack)
         self.ui.closeBoxButton.clicked.connect(self.close_box)
+        self.ui.cancelLabelButton.clicked.connect(self.cancel_pack)
         logger.info(f'Class name - {__class__.__name__}: Initialization with attributes:'
                     f'current pack number :{self.current_pack_number} /'
                     f'pack counter: {self.pack_counter}')
+
 
     def get_last_pack(self):
         with get_db_session() as db:
@@ -182,11 +185,15 @@ class WorkWithPack(QObject):
             self.boxes_worker.pallet_worker.new_pallet(self.boxes_worker.pallet_worker.current_pallet)
 
         if self.pack_counter == 0:
-            logger.debug(f'Condition of create new box success.')
-            self.boxes_worker.new_box()
-            self.ui.CurrentBoxOnPalletLabel.setText(str(self.boxes_worker.box_counter - 1)) if self.boxes_worker.box_counter > 0 else self.ui.CurrentBoxOnPalletLabel.setText(str(0))
+            with get_db_session() as db:
+                box_status = db.query(Boxes).order_by(Boxes.id.desc()).first()
+                if box_status.status != 'Edited':
+                    logger.debug(f'Condition of create new box success.')
+                    self.boxes_worker.new_box()
+                    self.ui.CurrentBoxOnPalletLabel.setText(str(self.boxes_worker.box_counter - 1)) if self.boxes_worker.box_counter > 0 else self.ui.CurrentBoxOnPalletLabel.setText(str(0))
 
-
+        print(self.pack_counter)
+        print(self.boxes_worker.box_counter)
 
         new_pack_number = int(self.current_pack_number) + 1
         self.current_pack_number = f'{new_pack_number:012d}'
@@ -241,8 +248,37 @@ class WorkWithPack(QObject):
         self.ui.stackedWidget_3.setCurrentIndex(1)
 
     def cancel_pack(self):
-        new_pack_number = int(self.current_pack_number) - 1
-        self.current_pack_number = f'{new_pack_number:012d}'
+
+
+        if self.pack_counter != 0:
+            with get_db_session() as db:
+                last_pack = db.query(Pack).filter(Pack.status=='Created').order_by(Pack.id.desc()).first()
+                if last_pack:
+                    last_pack.status = 'Deleted'
+                    db.commit()
+
+            self.pack_counter -= 1
+            self.cancel_pack_signal.emit()
+            new_pack_number = int(self.current_pack_number) - 1
+            self.current_pack_number = f'{new_pack_number:012d}'
+
+            if self.pack_counter == 0:
+                with get_db_session() as db:
+                    last_box = db.query(Boxes).order_by(Boxes.id.desc()).first()
+                    if last_box:
+                        last_box.status = 'Edited'
+                        db.commit()
+
+
+
+
+
+        else:
+            self.boxes_worker.show_error_window(4)
+
+
+
+
 
     @staticmethod
     def get_twenty_last_pack():
@@ -251,3 +287,5 @@ class WorkWithPack(QObject):
                                                      joinedload(Pack.boxes).joinedload(Boxes.pallet)).order_by(
                 Pack.id.desc()).limit(20).all()
             return las_twenty_pack
+
+

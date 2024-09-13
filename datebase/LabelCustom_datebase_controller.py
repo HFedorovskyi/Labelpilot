@@ -39,6 +39,7 @@ class LabelCustomDbController(QObject):
             for nomenclature in nomenclatures:
                 self.ui.NomenclatureComboBox.addItem(nomenclature[0])
 
+
     def get_db_nomenclature(self):
         current_nomenclature = self.ui.NomenclatureComboBox.currentText()
         with get_db_session() as db:
@@ -52,8 +53,8 @@ class LabelCustomDbController(QObject):
             except Exception as e:
                 check_box_open = False
 
-            if check_box_open == 'Open':
-                self.error_window.current_page(4)
+            if check_box_open == 'Open' or check_box_open == 'Edited':
+                self.error_window.current_page(5)
                 obj = self.ui.indicationWeightNettotextBrowser
                 self.error_window.setGeometry(obj.mapToGlobal(obj.rect().bottomLeft()).x() - 80,
                                               obj.mapToGlobal(obj.rect().bottomLeft()).y(), 400, 300)
@@ -84,6 +85,15 @@ class LabelCustomDbController(QObject):
                 self.ui.containerWeightLabel.setText(
                     str(nomenclature.box_container.weight + nomenclature.portion_container.weight))
 
+    def get_all_nomenclatures(self):
+        with get_db_session() as db:
+            all_nomeclatures = db.query(Nomenclature).all()
+            if all_nomeclatures:
+                nomenclature_names = [nomenclature.name for nomenclature in all_nomeclatures]
+                return nomenclature_names
+            else:
+                return []
+
     @staticmethod
     def check_db_empty():
         with get_db_session() as db:
@@ -106,6 +116,7 @@ class WorkingWithPacksController(QObject):
         self.pack_count = 0
         self.pack_worker.closer_box.connect(self.on_update_table_complete_box)
         self.boxes_worker.pallet_closer.connect(self.on_update_table_complete_pallet)
+        self.pack_worker.cancel_pack_signal.connect(self.on_update_table_cancel_pack)
         self.packaging_added.connect(self.update_currentPackInBoxLabel)
         self.ui.NomenclatureComboBox.currentTextChanged.connect(self.boxes_worker.update_pack_in_box)
         self.change_max_box_in_label()
@@ -147,15 +158,17 @@ class WorkingWithPacksController(QObject):
         if last_twenty_pack_data:
             for item in reversed(last_twenty_pack_data):
                 row = QTreeWidgetItem(self.ui.ContainerstreeWidget)
-                row.setText(0, str(item.number))
+                row.setText(0, str(item.number) if item.status != 'Deleted' else "Упаковка отменена")
+                if item.status == 'Deleted':
+                    row.setBackground(0, QColor(176,0,0))
                 row.setText(1, item.nomenclature.article)
                 row.setText(2, item.nomenclature.name)
                 row.setText(3, str(item.weight_netto))
                 row.setText(4, str(item.weight_brutto))
-                row.setText(5, item.boxes.number if item.boxes else None)
-                row.setBackground(5, QColor(168, 228, 160))
-                row.setText(6, item.boxes.pallet.number if item.boxes else None)
-                row.setBackground(6, QColor(168, 228, 160))
+                row.setText(5, item.boxes.number if item.status != 'Deleted' else "Упаковка отменена")
+                row.setBackground(5, QColor(168, 228, 160) if item.status != 'Deleted' else QColor(176,0,0))
+                row.setText(6, item.boxes.pallet.number if item.status != 'Deleted' else "Упаковка отменена")
+                row.setBackground(6, QColor(168, 228, 160) if item.status != 'Deleted' else QColor(176,0,0))
                 row.setText(7, item.created_at.strftime("%Y-%m-%d %H:%M:%S"))
                 self.ui.ContainerstreeWidget.addTopLevelItem(row)
 
@@ -171,6 +184,12 @@ class WorkingWithPacksController(QObject):
         logger.debug('on_update_table_complete_pallet started!')
         self.change_color_pallet(self.pallet_worker.current_pallet)
 
+    @Slot()
+    def on_update_table_cancel_pack(self):
+        logger.debug('on_update_table_cancel_pack started!')
+        self.cancel_pack(self.pack_worker.current_pack_number)
+
+
     def change_color_closed_box(self, box_number):
         for item in self.ui.ContainerstreeWidget.findItems(box_number, Qt.MatchFlag.MatchExactly, 5):
             item.setBackground(5, QColor(168, 228, 160))
@@ -178,6 +197,16 @@ class WorkingWithPacksController(QObject):
     def change_color_pallet(self, pallet_number):
         for item in self.ui.ContainerstreeWidget.findItems(pallet_number, Qt.MatchFlag.MatchExactly, 6):
             item.setBackground(6, QColor(168, 228, 160))
+
+    def cancel_pack(self, pack_number):
+        for item in self.ui.ContainerstreeWidget.findItems(pack_number, Qt.MatchFlag.MatchExactly, 0):
+            print(item)
+            item.setText(0, 'Упаковка отменена')
+            item.setBackground(0, QColor(176,0,0))
+            item.setBackground(5, QColor(176, 0, 0))
+            item.setText(5, 'Упаковка отменена')
+            item.setBackground(6, QColor(176, 0, 0))
+            item.setText(6, 'Упаковка отменена')
 
     @Slot(int)
     def update_currentPackInBoxLabel(self, pack_counter):

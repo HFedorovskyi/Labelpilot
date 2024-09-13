@@ -61,7 +61,6 @@ class BaseScaleController(QObject, abc.ABC, metaclass=QObjectMeta):
             f'{round(data - float(self.ui.containerWeightLabel.text()), 3)}')
 
     def check_weight_stability(self):  #Проверка стабильности веса и печать по стабилизации
-        logger.debug('start check_weight_stability')
         if len(self.previous_weights) == self.stability_threshold and all(
                 w == self.current_weight for w in self.previous_weights):
             logger.debug(f'previous weights {self.previous_weights}, current weight: {self.current_weight}')

@@ -45,7 +45,6 @@ class SettingsController(QObject):
         self.ui.choseScaleConnectButtnGroup.idToggled.connect(self.change_choseConnectioncomboBox)
         self.ui.progressBar.setVisible(False)
 
-
     def save_settings(self):  # Сохранения настроек
         settings = {
             'connection_type': self.ui.choseScaleConnectButtnGroup.checkedId(),
@@ -83,7 +82,6 @@ class SettingsController(QObject):
         protocol_com = settings.get('protocol_com', 0)
         max_box_on_pallet = settings.get('max_box_on_pallet', 0)
 
-
         self.ui.ListScalecomboBox_2.setCurrentIndex(int(scale))
         self.ui.choseScaleConnectButtnGroup.button(connection_type).setChecked(True)
         self.ui.checkBoxWeightStablity.setChecked(settings.get('print_if_weight_stable', False))
@@ -95,7 +93,6 @@ class SettingsController(QObject):
         self.ui.ListScalecomboBox_2.setCurrentIndex(protocol_com)
         self.ui.MaxBoxOnPalletLineEdit.setText(str(max_box_on_pallet))
         self.show_batch()
-
 
         ports = SerialWorker.get_ports()
         printers = get_printers()
@@ -141,4 +138,3 @@ class SettingsController(QObject):
         else:
             self.ui.batchNumberlineEdit.hide()
             self.ui.label_11.hide()
-

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'designerKowmat.ui'
+## Form generated from reading UI file 'erroriNsiFc.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -17,6 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
     QSizePolicy, QStackedWidget, QWidget)
+import resource_rc
 import resource_rc
 
 class Ui_BoxCloseError(object):
@@ -198,6 +199,42 @@ class Ui_BoxCloseError(object):
         self.label_11.setPixmap(QPixmap(u":/icons/icons/packing_1imgzsd88lx9.svg"))
         self.label_11.setScaledContents(True)
         self.stackedWidget.addWidget(self.page_5)
+        self.page_6 = QWidget()
+        self.page_6.setObjectName(u"page_6")
+        self.label_23 = QLabel(self.page_6)
+        self.label_23.setObjectName(u"label_23")
+        self.label_23.setGeometry(QRect(10, 120, 366, 81))
+        self.label_23.setMaximumSize(QSize(371, 120))
+        self.label_23.setStyleSheet(u"QLabel {\n"
+"    border-radius: 10px; /* \u0417\u0430\u043a\u0440\u0443\u0433\u043b\u0435\u043d\u043d\u044b\u0435 \u0443\u0433\u043b\u044b */\n"
+"    padding: 8px; /* \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0435 \u043e\u0442\u0441\u0442\u0443\u043f\u044b */\n"
+"	background-color: rgb(237, 243, 255);\n"
+"    color: #333333; /* \u0426\u0432\u0435\u0442 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
+"	font: 700 16pt \"Segoe UI\";\n"
+"}\n"
+"")
+        self.label_23.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_23.setWordWrap(True)
+        self.label_24 = QLabel(self.page_6)
+        self.label_24.setObjectName(u"label_24")
+        self.label_24.setGeometry(QRect(130, 0, 121, 121))
+        self.label_24.setPixmap(QPixmap(u":/icons/icons/forbidden_q9gv0dg6fncc.svg"))
+        self.label_24.setScaledContents(True)
+        self.pushButton_11 = QPushButton(self.page_6)
+        self.pushButton_11.setObjectName(u"pushButton_11")
+        self.pushButton_11.setGeometry(QRect(60, 210, 281, 71))
+        self.pushButton_11.setMaximumSize(QSize(281, 71))
+        self.pushButton_11.setStyleSheet(u"QPushButton {\n"
+"    border-radius: 10px; /* \u0417\u0430\u043a\u0440\u0443\u0433\u043b\u0435\u043d\u043d\u044b\u0435 \u0443\u0433\u043b\u044b */\n"
+"    padding: 8px; /* \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0435 \u043e\u0442\u0441\u0442\u0443\u043f\u044b */\n"
+"    color: white; /* \u0426\u0432\u0435\u0442 \u0442\u0435\u043a\u0441\u0442\u0430 */\n"
+"	font: 700 9pt \"Comic Sans MS\";\n"
+"	\n"
+"	background-color: rgb(254, 135, 93);\n"
+"}")
+        self.pushButton_11.setIcon(icon1)
+        self.pushButton_11.setIconSize(QSize(50, 5016))
+        self.stackedWidget.addWidget(self.page_6)
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
         self.label_4 = QLabel(self.page_2)
@@ -236,13 +273,14 @@ class Ui_BoxCloseError(object):
         self.stackedWidget.addWidget(self.page_2)
 
         self.retranslateUi(BoxCloseError)
-        self.pushButton.clicked["bool"].connect(BoxCloseError.close)
         self.pushButton_2.clicked["bool"].connect(BoxCloseError.close)
+        self.pushButton.clicked["bool"].connect(BoxCloseError.close)
+        self.pushButton_5.clicked["bool"].connect(BoxCloseError.close)
         self.pushButton_3.clicked["bool"].connect(BoxCloseError.close)
         self.pushButton_4.clicked["bool"].connect(BoxCloseError.close)
-        self.pushButton_5.clicked["bool"].connect(BoxCloseError.close)
+        self.pushButton_11.clicked["bool"].connect(BoxCloseError.close)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(BoxCloseError)
@@ -263,6 +301,9 @@ class Ui_BoxCloseError(object):
         self.label_9.setText("")
         self.label_10.setText(QCoreApplication.translate("BoxCloseError", u"\u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0435 \u043a\u043e\u0440\u043e\u0431\u0430 \u0438\u043b\u0438 \u043f\u0430\u043b\u043b\u0435\u0442\u044b! \u0414\u043b\u044f \u0432\u044b\u0445\u043e\u0434\u0430 \u0438\u0437 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e \u0437\u0430\u043a\u0440\u044b\u0442\u044c \u0432\u0441\u0435 \u043a\u043e\u0440\u043e\u0431\u0430 \u0438 \u043f\u0430\u043b\u043b\u0435\u0442\u044b!", None))
         self.label_11.setText("")
+        self.label_23.setText(QCoreApplication.translate("BoxCloseError", u"\u041d\u0435\u0442 \u044d\u0442\u0438\u043a\u0435\u0442\u043e\u043a \u0434\u043b\u044f \u043e\u0442\u043c\u0435\u043d\u044b! \u041a\u043e\u0440\u043e\u0431 \u043f\u0443\u0441\u0442!", None))
+        self.label_24.setText("")
+        self.pushButton_11.setText(QCoreApplication.translate("BoxCloseError", u"OK", None))
         self.label_4.setText("")
         self.pushButton_2.setText(QCoreApplication.translate("BoxCloseError", u"\u041e\u043a", None))
         self.label_2.setText(QCoreApplication.translate("BoxCloseError", u"\u0414\u043b\u044f \u0441\u043c\u0435\u043d\u0438 \u043d\u043e\u043c\u0435\u043d\u043a\u043b\u0430\u0442\u0443\u0440\u044b \u0441\u043d\u0430\u0447\u0430\u043b\u0430 \u0437\u0430\u043a\u0440\u043e\u0439\u0442\u0435 \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0439 \u043a\u043e\u0440\u043e\u0431!", None))
